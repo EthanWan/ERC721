@@ -1,6 +1,6 @@
 {
   "name": "erc721",
-  "version": "2.6.1",
+  "version": "0.1.0",
   "description": "Reference implementation of the ERC-721 non-fungible token standard.",
   "scripts": {
     "test": "npx hardhat test",
@@ -12,13 +12,9 @@
   },
   "license": "MIT",
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nibbstack/erc721.git"
+    "url": "https://github.com/EthanWan/ERC721"
   },
-  "bugs": {
-    "url": "https://github.com/nibbstack/erc721/issues"
-  },
-  "homepage": "https://github.com/nibbstack/erc721#readme",
+  "homepage": "https://github.com/EthanWan/ERC721#readme",
   "keywords": [
     "ethereum",
     "blockchain",
