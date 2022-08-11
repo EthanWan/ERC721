@@ -1,0 +1,56 @@
+{
+  "name": "erc721",
+  "version": "2.6.1",
+  "description": "Reference implementation of the ERC-721 non-fungible token standard.",
+  "scripts": {
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "flatten": "npx hardhat flatten",
+    "coverage": "npx hardhat coverage",
+    "solhint": "solhint src/**/*.sol",
+    "solhint:fix": "solhint --fix src/**/*.sol"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nibbstack/erc721.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nibbstack/erc721/issues"
+  },
+  "homepage": "https://github.com/nibbstack/erc721#readme",
+  "keywords": [
+    "ethereum",
+    "blockchain",
+    "eth",
+    "contract",
+    "contracts",
+    "smart",
+    "smart-contract",
+    "smart-contracts",
+    "token",
+    "tokens",
+    "nft",
+    "nfts",
+    "non-fungible",
+    "non-fungibles",
+    "eip",
+    "erc",
+    "erc721",
+    "erc-721",
+    "deed",
+    "standard"
+  ],
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "2.0.2",
+    "@nomiclabs/hardhat-waffle": "2.0.1",
+    "chai": "4.3.4",
+    "ethereum-waffle": "3.4.0",
+    "ethers": "5.5.2",
+    "hardhat": "2.7.0",
+    "hardhat-abi-exporter": "2.3.1",
+    "solhint": "3.3.6",
+    "solidity-coverage": "0.7.17",
+    "ts-node": "10.4.0"
+  }
+}
