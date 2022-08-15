@@ -9,7 +9,8 @@ module.exports = {
   solidity: '0.8.9',
   networks: {
     hardhat: {
-      initialBaseFeePerGas: 0 // hardhat london fork error fix for coverage
+      // hardhat london fork error fix for coverage
+      initialBaseFeePerGas: 0
     }
   },
   paths: {

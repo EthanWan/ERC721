@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Reference implementation of the ERC-721 non-fungible token standard.",
   "scripts": {
+    "run": "npx hardhat run scripts/xxx.js --network localhost",
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "flatten": "npx hardhat flatten",
@@ -30,12 +31,8 @@
     "nfts",
     "non-fungible",
     "non-fungibles",
-    "eip",
-    "erc",
     "erc721",
-    "erc-721",
-    "deed",
-    "standard"
+    "erc-721"
   ],
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.2",
