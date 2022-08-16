@@ -9,7 +9,10 @@
     "flatten": "npx hardhat flatten",
     "coverage": "npx hardhat coverage",
     "solhint": "solhint src/**/*.sol",
-    "solhint:fix": "solhint --fix src/**/*.sol"
+    "solhint:fix": "solhint --fix src/**/*.sol",
+    "doo": "doohickey init -e",
+    "lint:js": "doohickey lint:js --ext .js,.jsx,.ts,.tsx ",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "repository": {
@@ -44,6 +47,15 @@
     "hardhat-abi-exporter": "2.3.1",
     "solhint": "3.3.6",
     "solidity-coverage": "0.7.17",
-    "ts-node": "10.4.0"
+    "ts-node": "10.4.0",
+    "yzm-doohickey": "^0.1.2"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,tsx,ts,less,md,json}": "doohickey lint:prettier --write",
+    "**/*.less": "doohickey lint:style --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint:js"
+  },
+  "dependencies": {
+    "husky": "^8.0.1"
   }
 }
