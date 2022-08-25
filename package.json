@@ -40,7 +40,6 @@
     "erc-721"
   ],
   "devDependencies": {
-    "@babel/core": "^7.18.13",
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-waffle": "2.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -63,7 +62,10 @@
     "less": "^4.1.3",
     "less-loader": "^11.0.0",
     "mini-css-extract-plugin": "^2.6.1",
+    "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^7.0.1",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^7.8.0",
     "react-refresh": "^0.14.0",
     "resolve-url-loader": "^5.0.0",
     "solhint": "3.3.6",

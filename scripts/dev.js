@@ -1,15 +1,15 @@
 process.env.NODE_ENV = 'development'
+process.env.BABEL_ENV = 'development'
 
-const paths = require('path')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
+const paths = require('../config/paths')
 const configFactory = require('../config/webpack.config')
 
 const config = configFactory('development')
 const compiler = webpack(config)
 const host = process.env.HOST || '0.0.0.0'
 
-con
 const devServer = new WebpackDevServer(
   {
     allowedHosts: 'all',
@@ -42,6 +42,7 @@ const devServer = new WebpackDevServer(
     },
     // https: getHttpsConfig(),
     host,
+    port: 3000,
     historyApiFallback: {
       disableDotRule: true,
       index: paths.publicUrlOrPath,
