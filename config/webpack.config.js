@@ -22,7 +22,6 @@ const hasJsxRuntime = (() => {
   }
 })()
 
-const useTailwind = fs.existsSync(path.join(paths.appPath, 'tailwind.config.js'))
 const useTypeScript = fs.existsSync(paths.appTsConfig)
 
 module.exports = webpackEnv => {
@@ -49,36 +48,19 @@ module.exports = webpackEnv => {
           postcssOptions: {
             ident: 'postcss',
             config: false,
-            plugins: !useTailwind
-              ? [
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
-                  // Adds PostCSS Normalize as the reset css with default options,
-                  // so that it honors browserslist config in package.json
-                  // which in turn let's users customize the target behavior as per their needs.
-                  'postcss-normalize',
-                ]
-              : [
-                  'tailwindcss',
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
-                ],
+            plugins: [
+              'tailwindcss',
+              'postcss-flexbugs-fixes',
+              [
+                'postcss-preset-env',
+                {
+                  autoprefixer: {
+                    flexbox: 'no-2009',
+                  },
+                  stage: 3,
+                },
+              ],
+            ],
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
         },
@@ -291,35 +273,33 @@ module.exports = webpackEnv => {
               },
             },
             {
-              test: /\.less$/,
-              exclude: /\.module\.less$/,
-              use: getStyleLoaders(
-                {
-                  importLoaders: 3,
-                  sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-                  modules: {
-                    mode: 'icss',
-                  },
+              test: /\.css$/,
+              exclude: /\.module\.css$/,
+              use: getStyleLoaders({
+                importLoaders: 1,
+                sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+                modules: {
+                  mode: 'icss',
                 },
-                'less-loader'
-              ),
+              }),
+              // Don't consider CSS imports dead code even if the
+              // containing package claims to have no side effects.
+              // Remove this when webpack adds a warning or an error for this.
+              // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
-            // Adds support for CSS Modules, but using SASS
-            // using the extension .module.scss or .module.sass
+            // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
+            // using the extension .module.css
             {
-              test: /\.module\.less$/,
-              use: getStyleLoaders(
-                {
-                  importLoaders: 3,
-                  sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-                  modules: {
-                    mode: 'local',
-                    getLocalIdent: {},
-                  },
+              test: /\.module\.css$/,
+              use: getStyleLoaders({
+                importLoaders: 1,
+                sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+                modules: {
+                  mode: 'local',
+                  getLocalIdent: '[name]_[hash:5]',
                 },
-                'less-loader'
-              ),
+              }),
             },
             {
               exclude: [/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
@@ -505,8 +485,6 @@ module.exports = webpackEnv => {
         // },
       }),
     ].filter(Boolean),
-    // Turn off performance processing because we utilize
-    // our own hints via the FileSizeReporter
     performance: false,
   }
 }

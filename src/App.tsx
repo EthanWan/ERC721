@@ -1,24 +1,11 @@
-import React from 'react'
-import logo from './logo.svg'
-import './app.less'
-
 function app() {
   return (
-    <div className='app'>
-      <header className='app-header'>
-        <img src={logo} className='app-logo' alt='logo' />
-        <p>
-          Edit <code>src/app.tsx</code> and save to reload.
-        </p>
-        <a
-          className='app-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='w-full h-full'>
+      <div className='flex justify-center'>
+        <h1 className='text-2xl lg:text-5xl font-bold text-green-600 mt-12'>
+          Geeks For Geeks
+        </h1>
+      </div>
     </div>
   )
 }
