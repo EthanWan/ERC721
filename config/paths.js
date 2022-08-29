@@ -4,7 +4,7 @@ const fs = require('fs')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 
-const publicUrlOrPath = './'
+const publicUrlOrPath = '/'
 const buildPath = process.env.BUILD_PATH || 'dist'
 
 const moduleFileExtensions = [

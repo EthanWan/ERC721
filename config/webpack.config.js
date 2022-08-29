@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const paths = require('./paths')
 
 const hasJsxRuntime = (() => {
@@ -36,8 +37,6 @@ module.exports = webpackEnv => {
       isEnvDevelopment && require.resolve('style-loader'),
       isEnvProduction && {
         loader: MiniCssExtractPlugin.loader,
-        // css is located in `static/css`, use '../../' to locate index.html folder
-        // in production `paths.publicUrlOrPath` can be a relative path
         options: paths.publicUrlOrPath.startsWith('.') ? { publicPath: '../../' } : {},
       },
       {
@@ -45,14 +44,9 @@ module.exports = webpackEnv => {
         options: cssOptions,
       },
       {
-        // Options for PostCSS as we reference these options twice
-        // Adds vendor prefixing based on your specified browser support in
-        // package.json
         loader: require.resolve('postcss-loader'),
         options: {
           postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
             ident: 'postcss',
             config: false,
             plugins: !useTailwind
@@ -489,28 +483,27 @@ module.exports = webpackEnv => {
       //       infrastructure: 'silent',
       //     },
       //   }),
-      // !disableESLintPlugin &&
-      //   new ESLintPlugin({
-      //     // Plugin options
-      //     extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-      //     formatter: require.resolve('react-dev-utils/eslintFormatter'),
-      //     eslintPath: require.resolve('eslint'),
-      //     failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
-      //     context: paths.appSrc,
-      //     cache: true,
-      //     cacheLocation: path.resolve(paths.appNodeModules, '.cache/.eslintcache'),
-      //     // ESLint class options
-      //     cwd: paths.appPath,
-      //     resolvePluginsRelativeTo: __dirname,
-      //     baseConfig: {
-      //       extends: [require.resolve('eslint-config-react-app/base')],
-      //       rules: {
-      //         ...(!hasJsxRuntime && {
-      //           'react/react-in-jsx-scope': 'error',
-      //         }),
-      //       },
-      //     },
-      //   }),
+      new ESLintPlugin({
+        // Plugin options
+        extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+        formatter: () => {}, // require.resolve('react-dev-utils/eslintFormatter'),
+        eslintPath: require.resolve('eslint'),
+        failOnError: !isEnvDevelopment,
+        context: paths.appSrc,
+        cache: true,
+        cacheLocation: path.resolve(paths.appNodeModules, '.cache/.eslintcache'),
+        // ESLint class options
+        cwd: paths.appPath,
+        resolvePluginsRelativeTo: __dirname,
+        // baseConfig: {
+        //   extends: [require.resolve('eslint-config-react-app/base')],
+        //   rules: {
+        //     ...(!hasJsxRuntime && {
+        //       'react/react-in-jsx-scope': 'error',
+        //     }),
+        //   },
+        // },
+      }),
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
