@@ -1,6 +1,6 @@
-require('@nomiclabs/hardhat-waffle');
-require('hardhat-abi-exporter');
-require('solidity-coverage');
+require('@nomiclabs/hardhat-waffle')
+require('hardhat-abi-exporter')
+require('solidity-coverage')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -10,17 +10,17 @@ module.exports = {
   networks: {
     hardhat: {
       // hardhat london fork error fix for coverage
-      initialBaseFeePerGas: 0
-    }
+      initialBaseFeePerGas: 0,
+    },
   },
   paths: {
     sources: './src/*',
     artifacts: './build',
-    tests: './src/tests/*'
+    tests: './src/tests/*',
   },
   abiExporter: {
     path: './abi',
     clear: true,
     flat: true,
-  }
-};
+  },
+}

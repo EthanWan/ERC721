@@ -6,5 +6,6 @@ dist
 !build/.keep
 cache
 abi
+yarn-error.log
 
 TODO.md

@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const NodePloyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const paths = require('./paths')
 
@@ -59,6 +60,7 @@ module.exports = webpackEnv => {
                   },
                   stage: 3,
                 },
+                ...(isEnvProduction ? ['cssnano'] : []),
               ],
             ],
           },
@@ -172,6 +174,10 @@ module.exports = webpackEnv => {
         //   babelRuntimeRegenerator,
         // ]),
       ],
+      fallback: {
+        fs: false,
+        crypto: require.resolve('crypto-browserify'),
+      },
     },
     module: {
       strictExportPresence: true,
@@ -472,18 +478,10 @@ module.exports = webpackEnv => {
         context: paths.appSrc,
         cache: true,
         cacheLocation: path.resolve(paths.appNodeModules, '.cache/.eslintcache'),
-        // ESLint class options
         cwd: paths.appPath,
         resolvePluginsRelativeTo: __dirname,
-        // baseConfig: {
-        //   extends: [require.resolve('eslint-config-react-app/base')],
-        //   rules: {
-        //     ...(!hasJsxRuntime && {
-        //       'react/react-in-jsx-scope': 'error',
-        //     }),
-        //   },
-        // },
       }),
+      new NodePloyfillWebpackPlugin(),
     ].filter(Boolean),
     performance: false,
   }

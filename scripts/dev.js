@@ -40,7 +40,7 @@ const devServer = new WebpackDevServer(
     devMiddleware: {
       publicPath: paths.publicUrlOrPath.slice(0, -1),
     },
-    // https: getHttpsConfig(),
+    https: false,
     host,
     port: 3000,
     historyApiFallback: {
