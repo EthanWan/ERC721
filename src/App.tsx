@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import Web3 from './utils/web3'
+import { useWeb3React } from '@web3-react/core'
 
 function App() {
-  const [address, setAddress] = useState<string | null>(null)
-  const connectWallet = async () => {
-    Web3.getWeb3().then(web3 => {
-      web3.eth.requestAccounts().then((add: string[]) => {
-        setAddress(add[0])
-      })
-    })
+  const { connector, chainId, account } = useWeb3React()
+
+  const connectWallet = () => {
+    connector.activate()
+  }
+
+  if (chainId != 3) {
+    console.error('Change to test network!')
   }
 
   return (
@@ -23,8 +23,8 @@ function App() {
               className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 -my-2.5 ml-8 cursor-pointer'
             >
               <span>
-                {address ? address : 'Connect Wallet'}
-                {!address && <span> →</span>}
+                {account ? account : 'Connect Wallet'}
+                {!account && <span> →</span>}
               </span>
             </a>
           </div>
