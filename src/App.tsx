@@ -1,13 +1,15 @@
 import { useWeb3React } from '@web3-react/core'
 
 function App() {
-  const { connector, chainId, account } = useWeb3React()
+  const { connector, chainId, account, isActive } = useWeb3React()
 
   const connectWallet = () => {
-    connector.activate()
+    if (!isActive) {
+      connector.activate()
+    }
   }
 
-  if (chainId != 3) {
+  if (chainId && chainId != 3) {
     console.error('Change to test network!')
   }
 
@@ -23,7 +25,9 @@ function App() {
               className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 -my-2.5 ml-8 cursor-pointer'
             >
               <span>
-                {account ? account : 'Connect Wallet'}
+                {account
+                  ? account.replace(/^(0x.{4})(.*)(.{4})/, '$1...$3')
+                  : 'Connect Wallet'}
                 {!account && <span> →</span>}
               </span>
             </a>

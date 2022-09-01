@@ -6,8 +6,8 @@ import { hooks as metaMaskHooks, metaMask } from './connectors/metaMask'
 import './index.css'
 import App from './App'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const connectors: [MetaMask, Web3ReactHooks][] = [[metaMask, metaMaskHooks]]
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>

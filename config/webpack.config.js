@@ -93,11 +93,11 @@ module.exports = webpackEnv => {
     stats: 'errors-warnings',
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     bail: isEnvProduction,
-    // devtool: isEnvProduction
-    //   ? shouldUseSourceMap
-    //     ? 'source-map'
-    //     : false
-    //   : isEnvDevelopment && 'cheap-module-source-map',
+    devtool: isEnvProduction
+      ? shouldUseSourceMap
+        ? 'source-map'
+        : false
+      : isEnvDevelopment && 'cheap-module-source-map',
     entry: paths.appIndexJs,
     output: {
       path: paths.appBuild,
