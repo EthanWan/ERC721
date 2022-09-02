@@ -1,7 +1,9 @@
 import { useWeb3React } from '@web3-react/core'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
   const { connector, chainId, account, isActive } = useWeb3React()
+  const navigate = useNavigate()
 
   const connectWallet = () => {
     if (!isActive) {
@@ -19,7 +21,13 @@ function App() {
         <div className='relative flex items-center py-[2.125rem]'>
           <div className='mr-auto flex-none text-slate-900'>Logo</div>
           <div className='hidden lg:ml-8 lg:flex lg:items-center lg:border-slate-900/15 lg:pl-8'>
-            <a href='/create'>Create</a>
+            <a
+              onClick={() => {
+                navigate('/create')
+              }}
+            >
+              Create
+            </a>
             <a
               onClick={connectWallet}
               className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 -my-2.5 ml-8 cursor-pointer'
