@@ -3,6 +3,7 @@ import { useNavigate, Routes, Route } from 'react-router-dom'
 import MenuBtn from './components/EMenu'
 import Create from './pages/Create'
 import Lists from './pages/Lists'
+import Detail from './pages/Detail'
 
 function App() {
   const { connector, chainId, account, isActive } = useWeb3React()
@@ -61,6 +62,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Lists />} />
         <Route path='/create' element={<Create />} />
+        <Route path='/detail' element={<Detail />} />
       </Routes>
     </div>
   )
