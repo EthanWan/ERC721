@@ -1,13 +1,20 @@
 function Create() {
+  const submit = (e: any) => {
+    e.preventDefault()
+    console.log('submit')
+  }
+
   return (
     <>
       <div className='flex justify-center mt-4'>
         <div className='mt-5 md:mt-0 md:w-5/12'>
-          <form>
+          <form onSubmit={submit}>
             <div className='sm:overflow-hidden sm:rounded-md'>
               <div className='space-y-6 bg-white px-4 py-5 sm:p-6'>
                 <div>
-                  <label className='block text-lg font-bold text-gray-700'>Image</label>
+                  <label className="after:content-['*'] after:ml-0.5 after:text-red-500 after:font-medium block text-lg font-bold text-gray-700">
+                    Image
+                  </label>
                   <div className='mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6'>
                     <div className='space-y-1 text-center'>
                       <svg
@@ -47,16 +54,18 @@ function Create() {
                 <div className='col-span-3 sm:col-span-2'>
                   <label
                     htmlFor='company-website'
-                    className='block text-lg font-bold text-gray-700'
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500 after:font-medium block text-lg font-bold text-gray-700"
                   >
                     Name
                   </label>
                   <div className='mt-1 flex rounded-md shadow-sm'>
                     <input
+                      required
                       type='text'
                       name='company-website'
                       id='company-website'
-                      className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                      // px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:shadow-none
+                      className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm req'
                       placeholder='Item name'
                     />
                   </div>

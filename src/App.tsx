@@ -1,12 +1,26 @@
 import { useWeb3React } from '@web3-react/core'
 import { useNavigate, Routes, Route } from 'react-router-dom'
+import { ethers } from 'ethers'
+// import type { ExternalProvider } from 'ethers'
 import MenuBtn from './components/EMenu'
 import Create from './pages/Create'
 import Lists from './pages/Lists'
 import Detail from './pages/Detail'
 
 function App() {
-  const { connector, chainId, account, isActive } = useWeb3React()
+  const { connector, chainId, account, isActive, provider } = useWeb3React()
+  // console.log(provider)
+  if (provider) {
+    const provider2 = new ethers.providers.Web3Provider(provider.provider)
+    provider2.getBalance(account as string).then(balance => {
+      console.log(ethers.utils.formatEther(balance))
+    })
+
+    provider2.getBlockNumber().then(res => {
+      console.log(res)
+    })
+  }
+
   const navigate = useNavigate()
 
   const connectWallet = () => {
