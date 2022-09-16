@@ -31,7 +31,7 @@ function Create() {
                   <label className="after:content-['*'] after:ml-0.5 after:text-red-500 after:font-medium block text-lg font-bold text-gray-700">
                     Image
                   </label>
-                  <div className='mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6'>
+                  <div className='cursor-pointer mt-1 flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-5 pb-6'>
                     <div className='space-y-1 text-center'>
                       <svg
                         className='mx-auto h-12 w-12 text-gray-400'
@@ -50,7 +50,7 @@ function Create() {
                       <div className='flex text-sm text-gray-600'>
                         <label
                           htmlFor='file-upload'
-                          className='relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500'
+                          className='relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500'
                         >
                           <span>Upload a file</span>
                           <input
@@ -58,11 +58,41 @@ function Create() {
                             name='file-upload'
                             type='file'
                             className='sr-only'
+                            onChange={e => {
+                              const name = e.target.value
+                              const fileName = name
+                                .substring(name.lastIndexOf('.') + 1)
+                                .toLowerCase()
+                              if (
+                                fileName != 'jpg' &&
+                                fileName != 'jpeg' &&
+                                fileName != 'png' &&
+                                fileName != 'gif'
+                              ) {
+                                // show message
+                                e.target.value = ''
+                                return false
+                              }
+                              let fileSize = 0
+                              fileSize =
+                                e.target.files &&
+                                Array.isArray(e.target.files) &&
+                                e.target.files[0].size
+                              const size = fileSize / 1024
+                              if (size > 10000) {
+                                // show message
+                                e.target.value = ''
+                                return false
+                              }
+                              console.log(e.target.files)
+                            }}
                           />
                         </label>
                         <p className='pl-1'>or drag and drop</p>
                       </div>
-                      <p className='text-xs text-gray-500'>PNG, JPG, GIF up to 10MB</p>
+                      <p className='text-xs text-gray-500'>
+                        PNG, JPG, JPEG, GIF up to 10MB
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -88,7 +118,7 @@ function Create() {
                       name='company-website'
                       id='company-website'
                       className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm req'
-                      placeholder='Item name'
+                      placeholder='NFT name'
                     />
                   </div>
                 </div>
@@ -141,7 +171,7 @@ function Create() {
                       name='about'
                       rows={3}
                       className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      placeholder='Provide a detailed description of you item.'
+                      placeholder='Provide a detailed description of you NFT.'
                       defaultValue={''}
                     />
                   </div>

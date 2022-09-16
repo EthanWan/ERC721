@@ -39,7 +39,7 @@ function App() {
         <nav className='mx-auto max-w-container px-4 sm:px-6 lg:px-8'>
           <div className='relative flex items-center py-6'>
             <div
-              className='mr-auto flex-none text-slate-900'
+              className='cursor-pointer mr-auto flex-none text-slate-900'
               onClick={() => {
                 navigate('/')
               }}
