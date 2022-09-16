@@ -1,7 +1,7 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { useRef } from 'react'
 import Toast from './Toast'
-import type { VoidFunc, NoticeProps } from './Toast'
+import type { VoidFunc, NoticeProps, ToastRef } from './Toast'
 
 type ToastNotic = (content: string, duration: number, onClose: VoidFunc) => void
 
@@ -11,27 +11,26 @@ interface Message {
   error: ToastNotic
 }
 
-interface ToastResult {
-  addNotice: (notice: NoticeProps) => void
+type ToastResult = ToastRef & {
   destroy: VoidFunc
 }
 
 function createToast(): ToastResult {
   const div = document.createElement('div')
   document.body.appendChild(div)
+
   const toast = ReactDOM.createRoot(div as HTMLElement)
-  toast.render(
-    <Toast
-      destroy={() => {
-        toast.unmount()
-        document.body.removeChild(div)
-      }}
-    />
-  )
+  // eslint-disable-next-line
+  const toastRef = useRef<ToastRef>(null)
+  toast.render(<Toast ref={toastRef} />)
 
   return {
     addNotice(notice: NoticeProps) {
-      return toast.addNotice(notice)
+      return toastRef.current?.addNotice(notice)
+    },
+    destroy() {
+      toast.unmount()
+      document.body.removeChild(div)
     },
   }
 }

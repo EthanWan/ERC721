@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useImperativeHandle, forwardRef } from 'react'
 
 export type VoidFunc = () => void
 
@@ -10,32 +10,35 @@ export interface NoticeProps {
   onClose: VoidFunc
 }
 
-interface ToastProps {
-  destroy: VoidFunc
+type ToastProps = {}
+
+export type ToastRef = {
+  addNotice: (notice: NoticeProps) => void
 }
 
-function Toast(props: ToastProps) {
-  const { destroy } = props
+const Toast: React.ForwardRefRenderFunction<ToastRef, ToastProps> = (_, ref) => {
   const [notices, setNotices] = useState<NoticeProps[]>([])
 
   const noticeKey = () => {
     return `notice-${new Date().getTime()}-${notices.length}`
   }
 
-  const addNotice = (notice: NoticeProps): VoidFunc => {
-    notice.key = noticeKey()
-    notices[0] = notice
+  useImperativeHandle(ref, () => ({
+    addNotice: (notice: NoticeProps): VoidFunc => {
+      notice.key = noticeKey()
+      notices[0] = notice
 
-    setNotices(notices)
-    if (notice.duration > 0) {
-      setTimeout(() => {
+      setNotices(notices)
+      if (notice.duration > 0) {
+        setTimeout(() => {
+          removeNotice(notice.key!)
+        }, notice.duration)
+      }
+      return () => {
         removeNotice(notice.key!)
-      }, notice.duration)
-    }
-    return () => {
-      removeNotice(notice.key!)
-    }
-  }
+      }
+    },
+  }))
 
   const removeNotice = (key: string) => {
     setNotices(
@@ -63,4 +66,4 @@ function Toast(props: ToastProps) {
   )
 }
 
-export default Toast
+export default forwardRef(Toast)
