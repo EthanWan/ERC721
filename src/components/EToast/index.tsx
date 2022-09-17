@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client'
-import { useRef } from 'react'
+import React from 'react'
 import Toast from './Toast'
 import type { VoidFunc, NoticeProps, ToastRef } from './Toast'
 
-type ToastNotic = (content: string, duration: number, onClose: VoidFunc) => void
+type ToastNotic = (content: string, duration: number, onClose?: VoidFunc) => void
 
 interface Message {
   info: ToastNotic
@@ -20,8 +20,7 @@ function createToast(): ToastResult {
   document.body.appendChild(div)
 
   const toast = ReactDOM.createRoot(div as HTMLElement)
-  // eslint-disable-next-line
-  const toastRef = useRef<ToastRef>(null)
+  const toastRef = React.createRef<ToastRef>()
   toast.render(<Toast ref={toastRef} />)
 
   return {
@@ -53,7 +52,7 @@ function notice(
   type: string,
   content: string,
   duration: number,
-  onClose: VoidFunc
+  onClose?: VoidFunc
 ): void {
   if (!toast) toast = createToast()
   return toast.addNotice({ type, content, duration, onClose })

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import message from '../components/EToast'
 
 interface FormState {
   image: string // storage to IPFS
@@ -17,6 +18,7 @@ function Create() {
 
   const submit = (e: any) => {
     e.preventDefault()
+    message.info('message', 1500)
     console.log('submit', values)
   }
 
