@@ -68,19 +68,21 @@ const Toast: React.ForwardRefRenderFunction<ToastRef, ToastProps> = (_, ref) => 
     },
   }))
 
-  const removeNotice = (key: string) => {
-    setNotices(
-      notices.filter(async notice => {
+  const removeNotice = async (key: string) => {
+    setShow(prevState => {
+      delete prevState[key]
+      return {
+        ...prevState,
+      }
+    })
+
+    await new Promise(resolve => {
+      setTimeout(resolve, animationTime)
+    })
+
+    setNotices(prevState =>
+      prevState.filter(notice => {
         if (notice.key === key) {
-          setShow(prevState => {
-            delete prevState[key]
-            return {
-              ...prevState,
-            }
-          })
-          await new Promise(resolve => {
-            setTimeout(resolve, animationTime)
-          })
           if (notice.onClose) notice.onClose
           return false
         }
