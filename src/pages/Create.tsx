@@ -19,6 +19,9 @@ function Create() {
   const submit = (e: any) => {
     e.preventDefault()
     message.info('message', 1500)
+    message.warning('message', 1500)
+    message.error('message', 1500)
+    message.success('message', 1500)
     console.log('submit', values)
   }
 

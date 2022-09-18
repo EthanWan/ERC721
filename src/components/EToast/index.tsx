@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import React from 'react'
 import Toast from './Toast'
-import type { VoidFunc, NoticeProps, ToastRef } from './Toast'
+import type { VoidFunc, NoticeProps, ToastRef, NoticeType } from './Toast'
 
 type ToastNotic = (content: string, duration: number, onClose?: VoidFunc) => void
 
@@ -9,6 +9,7 @@ interface Message {
   info: ToastNotic
   success: ToastNotic
   error: ToastNotic
+  warning: ToastNotic
 }
 
 type ToastResult = ToastRef & {
@@ -44,12 +45,15 @@ const message: Message = {
   error: (content, duration, onClose) => {
     return notice('error', content, duration, onClose)
   },
+  warning: (content, duration, onClose) => {
+    return notice('warning', content, duration, onClose)
+  },
 }
 
 let toast: ToastResult
 
 function notice(
-  type: string,
+  type: NoticeType,
   content: string,
   duration: number,
   onClose?: VoidFunc
