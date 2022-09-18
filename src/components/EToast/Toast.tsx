@@ -26,20 +26,37 @@ export type ToastRef = {
 const animationTime = 300
 const Toast: React.ForwardRefRenderFunction<ToastRef, ToastProps> = (_, ref) => {
   const [notices, setNotices] = useState<NoticeProps[]>([])
-  const [show, setShow] = useState<boolean>(false)
+  const [show, setShow] = useState<{ [key: string]: boolean }>({})
 
   const noticeKey = () => {
     return `notice-${new Date().getTime()}`
   }
 
-  useEffect(() => {}, [notices])
+  useEffect(() => {
+    if (notices.length > 0) {
+      setShow(prevState => {
+        const newShow: { [key: string]: boolean } = {}
+        const keys = Object.keys(prevState)
+        notices.forEach(notice => {
+          if (!keys.includes(notice.key!)) {
+            newShow[notice.key!] = true
+          }
+        })
+        return {
+          ...prevState,
+          ...newShow,
+        }
+      })
+    }
+  }, [notices])
 
   useImperativeHandle(ref, () => ({
     addNotice: (notice: NoticeProps): VoidFunc => {
       notice.key = noticeKey()
-      notices.push(notice)
-      setNotices(notices)
-      setShow(true)
+      setNotices(prevState => {
+        return [...prevState, notice]
+      })
+
       if (notice.duration > 0) {
         setTimeout(() => {
           removeNotice(notice.key!)
@@ -55,7 +72,12 @@ const Toast: React.ForwardRefRenderFunction<ToastRef, ToastProps> = (_, ref) => 
     setNotices(
       notices.filter(async notice => {
         if (notice.key === key) {
-          setShow(false)
+          setShow(prevState => {
+            delete prevState[key]
+            return {
+              ...prevState,
+            }
+          })
           await new Promise(resolve => {
             setTimeout(resolve, animationTime)
           })
@@ -72,7 +94,7 @@ const Toast: React.ForwardRefRenderFunction<ToastRef, ToastProps> = (_, ref) => 
       {notices.map(notice => (
         <Transition
           key={notice.key}
-          show={show}
+          show={show[notice.key!] || false}
           enter={`transition duration-${animationTime} ease-in-out`}
           enterFrom='opacity-0 translate-y-0'
           enterTo='opacity-100 translate-y-2'

@@ -26,7 +26,15 @@ function createToast(): ToastResult {
 
   return {
     addNotice(notice: NoticeProps) {
-      return toastRef.current?.addNotice(notice)
+      if (!toastRef.current) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(toastRef.current?.addNotice(notice))
+          }, 0)
+        })
+      }
+
+      return Promise.resolve(toastRef.current!.addNotice(notice))
     },
     destroy() {
       toast.unmount()
