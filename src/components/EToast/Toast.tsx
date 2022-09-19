@@ -9,7 +9,8 @@ import {
 export type VoidFunc = () => void
 
 export type NoticeType = 'success' | 'info' | 'warning' | 'error'
-export interface NoticeProps {
+
+export type NoticeProps = {
   key?: string
   type: NoticeType
   content: string

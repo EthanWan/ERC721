@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import message from '../components/EToast'
 
 interface FormState {
@@ -15,6 +16,8 @@ function Create() {
     name: '',
     supply: 1,
   })
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   const submit = (e: any) => {
     e.preventDefault()
@@ -33,70 +36,90 @@ function Create() {
                   <label className="after:content-['*'] after:ml-0.5 after:text-red-500 after:font-medium block text-lg font-bold text-gray-700">
                     Image
                   </label>
-                  <div className='cursor-pointer mt-1 flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-5 pb-6'>
-                    <div className='space-y-1 text-center'>
-                      <svg
-                        className='mx-auto h-12 w-12 text-gray-400'
-                        stroke='currentColor'
-                        fill='none'
-                        viewBox='0 0 48 48'
-                        aria-hidden='true'
-                      >
-                        <path
-                          d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
-                          strokeWidth={2}
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                        />
-                      </svg>
-                      <div className='flex text-sm text-gray-600'>
-                        <label
-                          htmlFor='file-upload'
-                          className='relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500'
-                        >
-                          <span>Upload a file</span>
-                          <input
-                            id='file-upload'
-                            name='file-upload'
-                            type='file'
-                            className='sr-only'
-                            onChange={e => {
-                              const name = e.target.value
-                              const fileName = name
-                                .substring(name.lastIndexOf('.') + 1)
-                                .toLowerCase()
-                              if (
-                                fileName != 'jpg' &&
-                                fileName != 'jpeg' &&
-                                fileName != 'png' &&
-                                fileName != 'gif'
-                              ) {
-                                // show message
-                                e.target.value = ''
-                                return false
-                              }
-                              let fileSize = 0
-                              fileSize =
-                                e.target.files &&
-                                Array.isArray(e.target.files) &&
-                                e.target.files[0].size
-                              const size = fileSize / 1024
-                              if (size > 10000) {
-                                // show message
-                                e.target.value = ''
-                                return false
-                              }
-                              console.log(e.target.files)
-                            }}
-                          />
-                        </label>
-                        <p className='pl-1'>or drag and drop</p>
-                      </div>
-                      <p className='text-xs text-gray-500'>
-                        PNG, JPG, JPEG, GIF up to 10MB
-                      </p>
+                  {previewImage ? (
+                    <div className='relative mt-1 rounded-2xl border-2 border-dashed border-gray-300 p-2'>
+                      <XMarkIcon
+                        className='h-5 w-5 absolute top-2 right-2 text-slate-700 font-bold cursor-pointer'
+                        onClick={() => {
+                          setPreviewImage(null)
+                        }}
+                      />
+                      <img className='rounded-2xl' src={previewImage} />
                     </div>
-                  </div>
+                  ) : (
+                    <label
+                      htmlFor='file-upload'
+                      className='cursor-pointer mt-1 flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-5 pb-6'
+                    >
+                      <div className='space-y-1 text-center'>
+                        <svg
+                          className='mx-auto h-12 w-12 text-gray-400'
+                          stroke='currentColor'
+                          fill='none'
+                          viewBox='0 0 48 48'
+                          aria-hidden='true'
+                        >
+                          <path
+                            d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
+                            strokeWidth={2}
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                          />
+                        </svg>
+                        <div className='flex text-sm text-gray-600'>
+                          <label className='cursor-pointer relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none'>
+                            <span>Upload a file</span>
+                            <input
+                              id='file-upload'
+                              name='file-upload'
+                              type='file'
+                              accept='image/*'
+                              className='sr-only'
+                              onChange={e => {
+                                console.log(e.target.files)
+                                const file = e.target.files && e.target.files[0]
+                                const reader = new FileReader()
+                                reader.readAsDataURL(file as Blob)
+
+                                reader.onload = (e: any) => {
+                                  setPreviewImage(e.target.result)
+                                }
+                                const name = e.target.value
+                                const fileName = name
+                                  .substring(name.lastIndexOf('.') + 1)
+                                  .toLowerCase()
+                                if (
+                                  fileName != 'jpg' &&
+                                  fileName != 'jpeg' &&
+                                  fileName != 'png' &&
+                                  fileName != 'gif'
+                                ) {
+                                  // show message
+                                  e.target.value = ''
+                                  return false
+                                }
+                                let fileSize = 0
+                                fileSize =
+                                  e.target.files &&
+                                  Array.isArray(e.target.files) &&
+                                  e.target.files[0].size
+                                const size = fileSize / 1024
+                                if (size > 10000) {
+                                  // show message
+                                  e.target.value = ''
+                                  return false
+                                }
+                              }}
+                            />
+                          </label>
+                          <p className='pl-1'>or drag and drop</p>
+                        </div>
+                        <p className='text-xs text-gray-500'>
+                          PNG, JPG, JPEG, GIF up to 10MB
+                        </p>
+                      </div>
+                    </label>
+                  )}
                 </div>
 
                 <div className='col-span-3 sm:col-span-2'>
