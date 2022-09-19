@@ -5,6 +5,7 @@ import { ethers } from 'ethers'
 import MenuBtn from './components/EMenu'
 import Create from './pages/Create'
 import Lists from './pages/Lists'
+import MyNFTs from './pages/MyNFTs'
 import Detail from './pages/Detail'
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
             >
               Logo
             </div>
-            <div className='hidden lg:ml-8 lg:flex lg:items-center lg:border-slate-900/15 lg:pl-8'>
+            <div className='hidden lg:ml-8 lg:flex lg:items-center lg:border-slate-900/15 lg:pl-8 text-base'>
               <a
                 onClick={() => {
                   navigate('/create')
@@ -55,10 +56,17 @@ function App() {
               >
                 Create
               </a>
-
+              <a
+                onClick={() => {
+                  navigate('/mynfts')
+                }}
+                className='cursor-pointer mx-4'
+              >
+                My NFTs
+              </a>
               <a
                 onClick={connectWallet}
-                className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 -my-2.5 ml-8 cursor-pointer'
+                className='inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 -my-2.5 cursor-pointer'
               >
                 <MenuBtn>
                   <span>
@@ -76,6 +84,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Lists />} />
         <Route path='/create' element={<Create />} />
+        <Route path='/mynfts' element={<MyNFTs />} />
         <Route path='/detail' element={<Detail />} />
       </Routes>
     </div>
