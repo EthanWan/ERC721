@@ -95,7 +95,9 @@
   "dependencies": {
     "@web3-react/core": "8.0.35-beta.0",
     "@web3-react/metamask": "8.0.28-beta.0",
+    "dot-prop": "^7.2.0",
     "husky": "^8.0.1",
+    "ipfs-core": "^0.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",

@@ -2,6 +2,8 @@
 // / <reference types="react" />
 // / <reference types="react-dom" />
 
+import type { IPFS } from 'ipfs-core-types'
+
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test'
@@ -38,4 +40,10 @@ declare module '*.svg' {
 declare module '*.module.less' {
   const classes: { readonly [key: string]: string }
   export default classes
+}
+
+declare global {
+  interface Window {
+    ipfs: IPFS
+  }
 }
