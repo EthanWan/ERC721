@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import type { IPFS } from 'ipfs-core-types'
-import { getProperty } from 'dot-prop'
 // dot-prop: used to obtain a property of an object when the name of property is a string
 // here we get ipfs.id when calling dotProp.get(ipfs, cmd), with cmd = 'id'
 // and we get ipfs.hash when calling with cmd = 'hash' etc.
+import { getProperty } from 'dot-prop'
 
 /*
  * Pass the command you'd like to call on an ipfs instance.

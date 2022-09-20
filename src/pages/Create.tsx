@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import useIpfsFactory from '../hooks/useIpfsFactory'
 import message from '../components/EToast'
 
 interface FormState {
@@ -16,13 +17,17 @@ function Create() {
     name: '',
     supply: 1,
   })
+  const { ipfs, isIpfsReady } = useIpfsFactory()
 
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
-  const submit = (e: any) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    message.info('message', 2000)
-    console.log('submit', values)
+    if (isIpfsReady) {
+      const res = await ipfs!.add(values.image)
+      console.log('image: ', res)
+      message.success('Image store to IPFS', 2000)
+    }
   }
 
   return (

@@ -1,6 +1,6 @@
 import { create } from 'ipfs-core'
 import type { IPFS } from 'ipfs-core-types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 let ipfs: IPFS | null = null
 
@@ -17,6 +17,7 @@ let ipfs: IPFS | null = null
 export default function useIpfsFactory() {
   const [isIpfsReady, setIpfsReady] = useState<boolean>(Boolean(ipfs))
   const [ipfsInitError, setIpfsInitError] = useState<unknown>(null)
+  const guard = useRef<boolean>(false)
 
   useEffect(() => {
     // The fn to useEffect should not return anything other than a cleanup fn,
@@ -27,14 +28,20 @@ export default function useIpfsFactory() {
     return function cleanup() {
       if (ipfs && ipfs.stop) {
         console.log('Stopping IPFS')
-        ipfs.stop().catch(err => console.error(err))
-        ipfs = null
-        setIpfsReady(false)
+        ipfs
+          .stop()
+          .then(() => {
+            ipfs = null
+            setIpfsReady(false)
+            guard.current = false
+          })
+          .catch(err => console.error(err))
       }
     }
   }, [])
 
   async function startIpfs() {
+    if (guard.current) return
     if (ipfs) {
       console.log('IPFS already started')
       // @ts-ignore
@@ -44,12 +51,14 @@ export default function useIpfsFactory() {
       ipfs = await window.ipfs.enable({ commands: ['id'] })
     } else {
       try {
+        guard.current = true
         console.time('IPFS Started')
         ipfs = await create()
         console.timeEnd('IPFS Started')
       } catch (error) {
         console.error('IPFS init error:', error)
         ipfs = null
+        guard.current = false
         setIpfsInitError(error)
       }
     }
