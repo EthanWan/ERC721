@@ -3,7 +3,7 @@ import React from 'react'
 import Toast from './Toast'
 import type { VoidFunc, NoticeProps, ToastRef, NoticeType } from './Toast'
 
-type ToastNotic = (content: string, duration: number, onClose?: VoidFunc) => void
+type ToastNotic = (content: string, duration?: number, onClose?: VoidFunc) => void
 
 interface Message {
   info: ToastNotic
@@ -44,16 +44,16 @@ function createToast(): ToastResult {
 }
 
 const message: Message = {
-  info: (content, duration, onClose) => {
+  info: (content, duration = 2000, onClose) => {
     return notice('info', content, duration, onClose)
   },
-  success: (content, duration, onClose) => {
+  success: (content, duration = 2000, onClose) => {
     return notice('success', content, duration, onClose)
   },
-  error: (content, duration, onClose) => {
+  error: (content, duration = 2000, onClose) => {
     return notice('error', content, duration, onClose)
   },
-  warning: (content, duration, onClose) => {
+  warning: (content, duration = 2000, onClose) => {
     return notice('warning', content, duration, onClose)
   },
 }
