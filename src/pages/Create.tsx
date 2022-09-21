@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import useIpfsFactory from '../hooks/useIpfsFactory'
+import { NFTStorage, File as NFTFile } from 'nft.storage'
 import message from '../components/EToast'
 
 interface FormState {
-  image: string // storage to IPFS
+  image: File | null // storage to IPFS
   name: string
   externalLink?: string
   description?: string
@@ -13,25 +13,27 @@ interface FormState {
 
 function Create() {
   const [values, setValues] = useState<FormState>({
-    image: '',
+    image: null,
     name: '',
     supply: 1,
   })
 
-  const { ipfs, isIpfsReady } = useIpfsFactory()
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // nodeId: "12D3KooWBayhasWo13W7SEZrcFAw7dXfSy1ZC4GMyVfmgc1mvj1p"
-    console.log(await ipfs?.id())
-    console.log(isIpfsReady)
-
-    if (isIpfsReady) {
-      //   const res = await ipfs!.add(values.image)
-      //   console.log('image: ', res)
-      message.success('Image store to IPFS', 2000)
-    }
+    console.log(`${NFT_STORAGE_KEY}`)
+    const client = new NFTStorage({ token: NFT_STORAGE_KEY })
+    console.log('client:', client)
+    const metadata = await client.store({
+      name: 'NFT',
+      description: `ethan's NFT !`,
+      image: new NFTFile([values.image!], values.image!.name, {
+        type: values.image!.type,
+      }),
+    })
+    console.log('metadata: ', metadata)
+    message.success('Image store to IPFS', 2000)
   }
 
   return (
@@ -118,6 +120,10 @@ function Create() {
                                   e.target.value = ''
                                   return false
                                 }
+                                setValues({
+                                  ...values,
+                                  image: file,
+                                })
                               }}
                             />
                           </label>

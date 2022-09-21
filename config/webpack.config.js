@@ -364,7 +364,7 @@ module.exports = webpackEnv => {
       // // during a production build.
       // // Otherwise React will be compiled in the very slow development mode.
       new webpack.DefinePlugin({
-        NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
+        NFT_STORAGE_KEY: JSON.stringify(process.env.NFT_STORAGE_KEY),
       }),
       // Experimental hot reloading for React .
       // https://github.com/facebook/react/tree/main/packages/react-refresh
