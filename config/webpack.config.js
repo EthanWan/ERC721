@@ -1,6 +1,7 @@
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
 const path = require('path')
 const fs = require('fs')
+const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -9,6 +10,9 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const NodePloyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const paths = require('./paths')
+require('dotenv').config({
+  path: `${paths.dotenv}.local`,
+})
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -359,7 +363,9 @@ module.exports = webpackEnv => {
       // // It is absolutely essential that NODE_ENV is set to production
       // // during a production build.
       // // Otherwise React will be compiled in the very slow development mode.
-      // new webpack.DefinePlugin(env.stringified),
+      new webpack.DefinePlugin({
+        NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
+      }),
       // Experimental hot reloading for React .
       // https://github.com/facebook/react/tree/main/packages/react-refresh
       isEnvDevelopment &&

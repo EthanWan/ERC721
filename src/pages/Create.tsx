@@ -17,15 +17,19 @@ function Create() {
     name: '',
     supply: 1,
   })
-  const { ipfs, isIpfsReady } = useIpfsFactory()
 
+  const { ipfs, isIpfsReady } = useIpfsFactory()
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    // nodeId: "12D3KooWBayhasWo13W7SEZrcFAw7dXfSy1ZC4GMyVfmgc1mvj1p"
+    console.log(await ipfs?.id())
+    console.log(isIpfsReady)
+
     if (isIpfsReady) {
-      const res = await ipfs!.add(values.image)
-      console.log('image: ', res)
+      //   const res = await ipfs!.add(values.image)
+      //   console.log('image: ', res)
       message.success('Image store to IPFS', 2000)
     }
   }

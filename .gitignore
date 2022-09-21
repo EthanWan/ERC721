@@ -9,3 +9,4 @@ abi
 yarn-error.log
 
 TODO.md
+.env.local
