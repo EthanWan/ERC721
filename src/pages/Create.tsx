@@ -20,21 +20,23 @@ function Create() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(`${NFT_STORAGE_KEY}`)
+    const { image, name, externalLink, description, supply } = values
     const client = new NFTStorage({ token: NFT_STORAGE_KEY })
+    console.log(supply)
     const metadata = await client.store({
-      name: 'NFT',
-      description: `ethan's NFT !`,
-      image: new NFTFile([values.image!], values.image!.name, {
-        type: values.image!.type,
+      name: name,
+      description: description || '',
+      externalLink: externalLink,
+      image: new NFTFile([image!], image!.name, {
+        type: image!.type,
       }),
     })
     console.log('metadata: ', metadata)
     message.success('Image store to IPFS', 2000)
+    // chain
   }
 
   const onFileChange = (file: File) => {
-    console.log(file)
     setValues({
       ...values,
       image: file,
