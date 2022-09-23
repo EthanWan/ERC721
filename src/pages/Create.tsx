@@ -22,7 +22,6 @@ function Create() {
     e.preventDefault()
     console.log(`${NFT_STORAGE_KEY}`)
     const client = new NFTStorage({ token: NFT_STORAGE_KEY })
-    console.log('client:', client)
     const metadata = await client.store({
       name: 'NFT',
       description: `ethan's NFT !`,
@@ -63,23 +62,20 @@ function Create() {
                   >
                     Name
                   </label>
-                  <div className='mt-1 flex rounded-md shadow-sm'>
-                    <input
-                      required
-                      type='text'
-                      value={values.name}
-                      onChange={e => {
-                        setValues({
-                          ...values,
-                          name: e.target.value,
-                        })
-                      }}
-                      name='company-website'
-                      id='company-website'
-                      className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm req'
-                      placeholder='NFT name'
-                    />
-                  </div>
+                  <input
+                    type='text'
+                    value={values.name}
+                    onChange={e => {
+                      setValues({
+                        ...values,
+                        name: e.target.value,
+                      })
+                    }}
+                    name='company-website'
+                    id='company-website'
+                    className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm req'
+                    placeholder='NFT name'
+                  />
                 </div>
 
                 <div className='col-span-3 sm:col-span-2'>
