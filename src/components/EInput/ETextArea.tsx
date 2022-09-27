@@ -1,7 +1,7 @@
 import React from 'react'
 import { ComponentStyleType } from '../component.d'
 
-export type ETextAreaProps = React.TextareaHTMLAttributes<Element> &
+export type ETextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> &
   Partial<ComponentStyleType>
 
 const ETextArea: React.FC<ETextAreaProps> = props => {

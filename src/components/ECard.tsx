@@ -1,5 +1,7 @@
 interface ECardProps {
   title?: string
+  owner?: string
+  imageUrl?: string
   onClick?: () => void
 }
 

@@ -6,10 +6,10 @@ import "../../erc721/tokens/nf-token-enumerable.sol";
 import "../../erc721/ownership/ownable.sol";
 
 /**
- * @dev This is an example contract implementation of NFToken with enumerable and metadata
+ * @dev This is an NFTCollection contract implementation of NFToken with enumerable and metadata
  * extensions.
  */
-contract NFTokenMetadataEnumerableMock is
+contract NFTCollection is
   NFTokenEnumerable,
   NFTokenMetadata,
   Ownable

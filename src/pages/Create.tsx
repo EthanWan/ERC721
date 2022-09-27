@@ -3,8 +3,11 @@ import { NFTStorage, File as NFTFile } from 'nft.storage'
 import { ethers } from 'ethers'
 import message from '../components/EToast'
 import EImageUpload from '../components/EImageUpload'
+import EInput from '../components/EInput'
 import useEthers from '../hooks/useEthers'
 import contractOutput from '../contracts/output/NFTokenMetadataEnumerableMock'
+
+const { ETextArea } = EInput
 
 interface FormState {
   image: File | null // storage to IPFS
@@ -80,7 +83,6 @@ function Create() {
                   </label>
                   <EImageUpload maxSize={10} onChange={onFileChange} />
                 </div>
-
                 <div className='col-span-3 sm:col-span-2'>
                   <label
                     htmlFor='company-website'
@@ -88,7 +90,7 @@ function Create() {
                   >
                     Name
                   </label>
-                  <input
+                  <EInput
                     type='text'
                     value={values.name}
                     onChange={e => {
@@ -111,27 +113,22 @@ function Create() {
                   >
                     External link
                   </label>
-                  <div className='mt-1 flex rounded-md shadow-sm'>
-                    <span className='inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500'>
-                      https://
-                    </span>
-                    <input
-                      type='text'
-                      name='company-website'
-                      value={values.externalLink}
-                      onChange={e => {
-                        setValues({
-                          ...values,
-                          externalLink: e.target.value,
-                        })
-                      }}
-                      id='company-website'
-                      className='block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      placeholder='www.example.com'
-                    />
-                  </div>
+                  <EInput
+                    addonBefore='https://'
+                    type='text'
+                    name='company-website'
+                    value={values.externalLink}
+                    onChange={e => {
+                      setValues({
+                        ...values,
+                        externalLink: e.target.value,
+                      })
+                    }}
+                    id='company-website'
+                    className='block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    placeholder='www.example.com'
+                  />
                 </div>
-
                 <div>
                   <label
                     htmlFor='about'
@@ -139,23 +136,21 @@ function Create() {
                   >
                     Description
                   </label>
-                  <div className='mt-1'>
-                    <textarea
-                      value={values.description}
-                      onChange={e => {
-                        setValues({
-                          ...values,
-                          description: e.target.value,
-                        })
-                      }}
-                      id='about'
-                      name='about'
-                      rows={3}
-                      className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      placeholder='Provide a detailed description of you NFT.'
-                      defaultValue={''}
-                    />
-                  </div>
+                  <ETextArea
+                    value={values.description}
+                    onChange={e => {
+                      setValues({
+                        ...values,
+                        description: e.target.value,
+                      })
+                    }}
+                    id='about'
+                    name='about'
+                    rows={3}
+                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    placeholder='Provide a detailed description of you NFT.'
+                    defaultValue={''}
+                  />
                   <p className='mt-2 text-sm text-gray-500'>
                     Brief description for your profile. URLs are hyperlinked.
                   </p>
@@ -168,22 +163,20 @@ function Create() {
                   >
                     Supply
                   </label>
-                  <div className='mt-1 flex rounded-md shadow-sm'>
-                    <input
-                      value={values.supply}
-                      onChange={e => {
-                        setValues({
-                          ...values,
-                          supply: Number(e.target.value),
-                        })
-                      }}
-                      type='text'
-                      name='company-website'
-                      id='company-website'
-                      className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      placeholder='Max supply'
-                    />
-                  </div>
+                  <EInput
+                    value={values.supply}
+                    onChange={e => {
+                      setValues({
+                        ...values,
+                        supply: Number(e.target.value),
+                      })
+                    }}
+                    type='text'
+                    name='company-website'
+                    id='company-website'
+                    className='block w-full flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    placeholder='Max supply'
+                  />
                 </div>
               </div>
               <div className='w-full px-4 py-3 text-left sm:px-6'>
