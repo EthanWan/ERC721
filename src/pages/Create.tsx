@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { NFTStorage, File as NFTFile } from 'nft.storage'
+import { ethers } from 'ethers'
 import message from '../components/EToast'
 import EImageUpload from '../components/EImageUpload'
+import useEthers from '../hooks/useEthers'
+import contractOutput from '../contracts/output/NFTokenMetadataEnumerableMock'
 
 interface FormState {
   image: File | null // storage to IPFS
@@ -12,6 +15,8 @@ interface FormState {
 }
 
 function Create() {
+  const { connector, account, isActive, provider } = useEthers()
+
   const [values, setValues] = useState<FormState>({
     image: null,
     name: '',
@@ -20,9 +25,12 @@ function Create() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!isActive || !provider) {
+      await connector.activate()
+    }
+
     const { image, name, externalLink, description, supply } = values
     const client = new NFTStorage({ token: NFT_STORAGE_KEY })
-    console.log(supply)
     const metadata = await client.store({
       name: name,
       description: description || '',
@@ -31,9 +39,25 @@ function Create() {
         type: image!.type,
       }),
     })
-    console.log('metadata: ', metadata)
-    message.success('Image store to IPFS', 2000)
-    // chain
+
+    // Create contract factory
+    // Can also use ethers.ContractFactory.fromSolidity
+    const signer = await provider!.getSigner()
+    const NFTContractFactory = new ethers.ContractFactory(
+      contractOutput.abi,
+      contractOutput.bytecode,
+      signer
+    )
+
+    // Deploy Contract
+    const contract = await NFTContractFactory.deploy(name, name, supply)
+    await contract.deployTransaction.wait(1)
+    console.log('contract address: ', contract.address)
+
+    const transactionResponse = await contract.mint(account, 1, JSON.stringify(metadata))
+    await transactionResponse.wait(1)
+
+    message.success('Mint NFT Success', 2000)
   }
 
   const onFileChange = (file: File) => {

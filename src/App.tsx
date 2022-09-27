@@ -1,5 +1,5 @@
-import { useWeb3React } from '@web3-react/core'
 import { useNavigate, Routes, Route } from 'react-router-dom'
+import useEthers from './hooks/useEthers'
 import MenuBtn from './components/EMenu'
 import Create from './pages/Create'
 import Lists from './pages/Lists'
@@ -7,10 +7,9 @@ import MyNFTs from './pages/MyNFTs'
 import Detail from './pages/Detail'
 
 function App() {
-  const { connector, chainId, account, isActive, provider } = useWeb3React()
+  const { connector, chainId, account, isActive } = useEthers()
 
   const navigate = useNavigate()
-
   const connectWallet = () => {
     if (!isActive) {
       connector.activate()

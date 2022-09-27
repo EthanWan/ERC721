@@ -1,23 +1,52 @@
-// import { useNavigate } from 'react-router-dom'
-// import ECard from '../components/ECard'
+import { useNavigate } from 'react-router-dom'
+import { ethers } from 'ethers'
+import { useCallback, useEffect } from 'react'
+import useEthers from '../hooks/useEthers'
+import ECard from '../components/ECard'
+import contractOutput from '../contracts/output/NFTokenMetadataEnumerableMock'
 
 function Lists() {
-  // const navigate = useNavigate()
+  // 0x501aC9dbfe9edb740d50038E581f189e89d22e22
+  // 0xa34dc5Adf564508739cE33442950dBD5bfd8aA66
+  const navigate = useNavigate()
+  const { provider } = useEthers()
+
+  const getTokenURI = useCallback(async () => {
+    const signer = await provider?.getSigner()
+    const contract = new ethers.Contract(
+      '0x501aC9dbfe9edb740d50038E581f189e89d22e22',
+      contractOutput.abi,
+      signer
+    )
+    const tokenURI = await contract.tokenURI(1)
+    return tokenURI
+  }, [provider])
+
+  useEffect(() => {
+    if (!provider) return
+    getTokenURI().then(uri => {
+      // metadate:
+      // ipfs://bafyreihln4c2qao4esctkpj25xtmhft32f6f5mwqrhjsumcqn7tiatusay/metadata.json
+      // {"name":"test","description":"This is test nft","externalLink":"","image":"ipfs://bafybeiewr2z3hivmps5rtxl4pcd3fzugwildwqqrhp6lwkprfguwj7isqq/logo.jpg"}
+      console.log(JSON.parse(uri))
+    })
+  }, [provider, getTokenURI])
+
   return (
     <>
       <div className='w-full p-3 grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 gap-4'>
-        {/* <ECard
-        onClick={() => {
-          navigate('/detail')
-        }}
-      />
-      <ECard />
-      <ECard />
-      <ECard />
-      <ECard />
-      <ECard /> */}
+        <ECard
+          onClick={() => {
+            navigate('/detail')
+          }}
+        />
+        <ECard />
+        <ECard />
+        <ECard />
+        <ECard />
+        <ECard />
       </div>
-      <div className='flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 mx-4'>
+      {/* <div className='flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 mx-4'>
         <div className='space-y-1 text-center'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -35,7 +64,7 @@ function Lists() {
 
           <p className='text-gray-500 text-2xl'>No NFT minted</p>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
