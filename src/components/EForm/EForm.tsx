@@ -17,12 +17,20 @@ const EForm: React.FC<Partial<EForm<unknown>>> = props => {
       onFinish({})
     }
   }
+
+  const onItemChange = (label: string, e: React.ChangeEvent) => {
+    console.log(label, e)
+  }
+
   return (
     <form onSubmit={submit}>
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           const { props } = child
-          return React.cloneElement(child, {})
+          return React.cloneElement(child, {
+            ...props,
+            onChange: onItemChange,
+          })
         }
         return null
       })}

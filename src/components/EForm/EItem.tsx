@@ -1,25 +1,31 @@
 import React, { useCallback, forwardRef, useImperativeHandle } from 'react'
 import cls from 'classnames'
 
+type EItemHTMElementType = HTMLTextAreaElement | HTMLInputElement
+
 export interface EItemProps {
   label: string
   name: string
   required: boolean
   initialValue: string
   children: React.ReactNode
+  onChange: (name: string, value: string) => void
 }
 
 const EItem: React.ForwardRefRenderFunction<{}, EItemProps> = (props, ref) => {
-  const { label, children, required, name, initialValue } = props
+  const { label, children, required, name, initialValue, onChange } = props
 
-  const onChange = useCallback((e: React.ChangeEvent) => {
-    console.log(e)
-  }, [])
+  const onItemChange = useCallback(
+    (e: React.ChangeEvent<EItemHTMElementType>) => {
+      onChange(name, e.target.value)
+    },
+    [name, onChange]
+  )
 
   useImperativeHandle(ref, () => ({
-    onChange: (e: React.ChangeEvent) => {
-      console.log()
-    },
+    // onChange: (e: React.ChangeEvent) => {
+    //   console.log()
+    // },
   }))
 
   return (
@@ -33,16 +39,14 @@ const EItem: React.ForwardRefRenderFunction<{}, EItemProps> = (props, ref) => {
       >
         {label}
       </label>
-      {React.cloneElement(
-        <div className='' />,
-        {
+      <div className=''>
+        {React.cloneElement(React.Children.only(children) as React.ReactElement, {
           name,
           id: name,
           defaultValue: initialValue,
-          onChange: onChange,
-        },
-        children
-      )}
+          onChange: onItemChange,
+        })}
+      </div>
     </div>
   )
 }
